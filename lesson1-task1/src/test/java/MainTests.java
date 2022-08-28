@@ -13,8 +13,8 @@ public class MainTests {
                 {6, 7, 8, 7, 6}
         };
         int expected = 9;
-        int rename = Main.getMaxValue(inputArray);
-        Assertions.assertEquals(expected, rename);
+        int result = Main.getMaxValue(inputArray);
+        Assertions.assertEquals(expected, result);
     }
 
     @Test
@@ -27,8 +27,8 @@ public class MainTests {
                 {6, 7, 8, 7, 6}
         };
         int expected = 0;
-        int rename = Main.getMinValue(inputArray);
-        Assertions.assertEquals(expected, rename);
+        int result = Main.getMinValue(inputArray);
+        Assertions.assertEquals(expected, result);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class MainTests {
                 {6, 7, 8, 7, 6}
         };
         double expected = 4.96;
-        double rename = Main.getAverageValue(inputArray);
-        Assertions.assertEquals(expected, rename);
+        double result = Main.getAverageValue(inputArray);
+        Assertions.assertEquals(expected, result);
     }
 }
