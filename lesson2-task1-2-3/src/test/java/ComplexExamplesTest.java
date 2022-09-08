@@ -4,10 +4,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -26,12 +23,13 @@ public class ComplexExamplesTest {
             new ComplexExamples.Person(5, "Amelia"),
             new ComplexExamples.Person(6, "Amelia"),
             new ComplexExamples.Person(7, "Amelia"),
+            null,
             new ComplexExamples.Person(8, "Amelia")
     };
 
     @Test
     public void getDuplicateFilteredSortedByIdAndGroupedByNameTest() {
-        Map<String, List<ComplexExamples.Person>> expected = new HashMap<>();
+        Map<String, List<ComplexExamples.Person>> expected = new TreeMap<>();
         expected.put("Amelia", Arrays.asList(
                 new ComplexExamples.Person(5, "Amelia"),
                 new ComplexExamples.Person(6, "Amelia"),
@@ -56,7 +54,7 @@ public class ComplexExamplesTest {
 
     @Test
     public void getDuplicateFilteredAndGroupedByNameWithCountingTest() {
-        Map<String, Long> expected = new HashMap<>();
+        Map<String, Long> expected = new TreeMap<>();
         expected.put("Amelia", 4L);
         expected.put("Emily", 1L);
         expected.put("Harry", 3L);
@@ -75,11 +73,12 @@ public class ComplexExamplesTest {
     }
 
     @Test
-    public void getPairReturnNullTest() {
+    public void getPairNotFoundTest() {
         int[] array = new int[]{7, 6, 6, 5};
         int sumOfPair = 10;
+        int[] expected = new int[0];
         int[] result = ComplexExamples.getPair(array, sumOfPair);
-        Assertions.assertNull(result);
+        Assertions.assertArrayEquals(expected, result);
     }
 
     @ParameterizedTest
@@ -112,7 +111,10 @@ public class ComplexExamplesTest {
                 arguments("cwheeel", "cartwheel"),
                 arguments("lw", "cartwheel"),
                 arguments("cwhesl", "cartwheels"),
-                arguments("cartwheell", "cartwheel")
+                arguments("cartwheell", "cartwheel"),
+                arguments(null, "cartwheel"),
+                arguments(null, null),
+                arguments("cwhesl", null)
         );
     }
 }

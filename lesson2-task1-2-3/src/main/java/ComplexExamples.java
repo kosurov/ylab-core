@@ -107,10 +107,14 @@ public class ComplexExamples {
         System.out.println("Duplicate filtered, grouped by name, sorted by name and id:");
         System.out.println();
 
-        for (Map.Entry<String, List<Person>> entry : dataDeduplicatedSortedAndGrouped.entrySet()) {
-            System.out.println(entry.getKey() + ':');
-            for (int i = 0; i < entry.getValue().size(); i++) {
-                System.out.println(i + 1 + " - " + entry.getValue().get(i));
+        if (dataDeduplicatedSortedAndGrouped.size() == 0) {
+            System.out.println("There is no data");
+        } else {
+            for (Map.Entry<String, List<Person>> entry : dataDeduplicatedSortedAndGrouped.entrySet()) {
+                System.out.println(entry.getKey() + ':');
+                for (int i = 0; i < entry.getValue().size(); i++) {
+                    System.out.println(i + 1 + " - " + entry.getValue().get(i));
+                }
             }
         }
 
@@ -139,9 +143,13 @@ public class ComplexExamples {
         System.out.println("Task1. Duplicate filtered, grouped by name, sorted by name:");
         System.out.println();
 
-        for (Map.Entry<String, Long> entry : dataDeduplicatedAndGrouped.entrySet()) {
-            System.out.println("Key: " + entry.getKey());
-            System.out.println("Value: " + entry.getValue());
+        if (dataDeduplicatedAndGrouped.size() == 0) {
+            System.out.println("There is no data");
+        } else {
+            for (Map.Entry<String, Long> entry : dataDeduplicatedAndGrouped.entrySet()) {
+                System.out.println("Key: " + entry.getKey());
+                System.out.println("Value: " + entry.getValue());
+            }
         }
 
         /*
@@ -158,10 +166,14 @@ public class ComplexExamples {
         System.out.println();
         System.out.println("**************************************************");
         System.out.println();
-        System.out.println("Task 2. Got the pair of numbers from array with the sum equals 10:");
+        System.out.println("Task 2. Got the pair of numbers from array with the sum equals " + sumOfPair + ':');
         System.out.println();
-        System.out.println(Arrays.toString(array) + ", " + sumOfPair +
-                " -> " + Arrays.toString(pair));
+        if (pair.length == 0) {
+            System.out.println("There is no such a pair");
+        } else {
+            System.out.println(Arrays.toString(array) + ", " + sumOfPair +
+                    " -> " + Arrays.toString(pair));
+        }
 
         /*
         Task3
@@ -191,64 +203,70 @@ public class ComplexExamples {
     }
 
     public static Map<String, List<Person>> getDuplicateFilteredSortedByIdAndGroupedByName(Person[] rawData) {
+        if (rawData == null) {
+            return Collections.emptyMap();
+        }
         return Arrays.stream(rawData)
+                .filter(Objects::nonNull)
                 .distinct()
                 .sorted(Comparator.comparing(Person::getId))
                 .collect(Collectors.groupingBy(Person::getName));
     }
 
     public static Map<String, Long> getDuplicateFilteredAndGroupedByNameWithCounting(Person[] rawData) {
+        if (rawData == null) {
+            return Collections.emptyMap();
+        }
         return Arrays.stream(rawData)
+                .filter(Objects::nonNull)
                 .distinct()
                 .collect(Collectors.groupingBy(Person::getName, Collectors.counting()));
     }
 
     public static int[] getPair(int[] array, int sumOfPair) {
-        // Получаем отсортированный массив
-        int[] sortedArray = Arrays.stream(array)
-                .sorted()
-                .toArray();
-        // Устанавливаем указатели вначале и в конце массива
-        int startIndex = 0;
-        int endIndex = sortedArray.length - 1;
-        // Проходим по элементам с двух строн, пока указатели не будут указывать на одно и то же число
-        while (sortedArray[startIndex] != sortedArray[endIndex]) {
-            // Если сумма равна искомой, возвращаем числа
-            // Если меньше, увеличиваем начальный указатель, иначе уменьшаем конечный указатель
-            if (sortedArray[startIndex] + sortedArray[endIndex] == sumOfPair) {
-                return new int[]{sortedArray[startIndex], sortedArray[endIndex]};
-            } else if (sortedArray[startIndex] + sortedArray[endIndex] < sumOfPair) {
-                startIndex++;
-            } else {
-                endIndex--;
+        if (array != null) {
+            // Получаем отсортированный массив
+            int[] sortedArray = Arrays.stream(array)
+                    .sorted()
+                    .toArray();
+            // Устанавливаем указатели вначале и в конце массива
+            int startIndex = 0;
+            int endIndex = sortedArray.length - 1;
+            // Проходим по элементам с двух строн, пока указатели не будут указывать на одно и то же число
+            while (sortedArray[startIndex] != sortedArray[endIndex]) {
+                // Если сумма равна искомой, возвращаем числа
+                // Если меньше, увеличиваем начальный указатель, иначе уменьшаем конечный указатель
+                if (sortedArray[startIndex] + sortedArray[endIndex] == sumOfPair) {
+                    return new int[]{sortedArray[startIndex], sortedArray[endIndex]};
+                } else if (sortedArray[startIndex] + sortedArray[endIndex] < sumOfPair) {
+                    startIndex++;
+                } else {
+                    endIndex--;
+                }
             }
         }
-        return null;
+        return new int[0];
     }
 
     public static boolean fuzzySearch(String s1, String s2) {
-        // Преобразуем исходные строки в массивы символов
-        char[] chars1 = s1.toCharArray();
-        char[] chars2 = s2.toCharArray();
-        // Указываем начальные индексы массивов
-        int index1 = 0;
-        int index2 = 0;
-
-        // Проверяем может ли первый массив войти во второй по размеру
-        if (chars1.length > chars2.length) {
-            return false;
-        }
-
-        while (index2 < chars2.length) {
-            // если символ из первого массива имеется во втором, переходим к следующему символу
-            if (chars1[index1] == chars2[index2]) {
-                index1++;
+        if (s1 != null && s2 != null && s1.length() <= s2.length()) {
+            // Преобразуем исходные строки в массивы символов
+            char[] chars1 = s1.toCharArray();
+            char[] chars2 = s2.toCharArray();
+            // Указываем начальные индексы массивов
+            int index1 = 0;
+            int index2 = 0;
+            while (index2 < chars2.length) {
+                // если символ из первого массива имеется во втором, переходим к следующему символу
+                if (chars1[index1] == chars2[index2]) {
+                    index1++;
+                }
+                // если в первом массиве символы закончились, значит он нечетко содержится во втором массиве
+                if (index1 == chars1.length) {
+                    return true;
+                }
+                index2++;
             }
-            // если в первом массиве символы закончились, значит он нечетко содержится во втором массиве
-            if (index1 == chars1.length) {
-                return true;
-            }
-            index2++;
         }
         // Если мы прошли по всему второму массиву, а первый не закончился, значит он не содержится во втором
         return false;
