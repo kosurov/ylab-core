@@ -110,12 +110,12 @@ public class ComplexExamples {
         if (dataDeduplicatedSortedAndGrouped.size() == 0) {
             System.out.println("There is no data");
         } else {
-            for (Map.Entry<String, List<Person>> entry : dataDeduplicatedSortedAndGrouped.entrySet()) {
-                System.out.println(entry.getKey() + ':');
-                for (int i = 0; i < entry.getValue().size(); i++) {
-                    System.out.println(i + 1 + " - " + entry.getValue().get(i));
+            dataDeduplicatedSortedAndGrouped.forEach((key, value) -> {
+                System.out.println(key + ':');
+                for (int i = 0; i < value.size(); i++) {
+                    System.out.println(i + 1 + " - " + value.get(i));
                 }
-            }
+            });
         }
 
         /*
@@ -146,10 +146,11 @@ public class ComplexExamples {
         if (dataDeduplicatedAndGrouped.size() == 0) {
             System.out.println("There is no data");
         } else {
-            for (Map.Entry<String, Long> entry : dataDeduplicatedAndGrouped.entrySet()) {
-                System.out.println("Key: " + entry.getKey());
-                System.out.println("Value: " + entry.getValue());
-            }
+            dataDeduplicatedAndGrouped.forEach((key, value) -> {
+                        System.out.println("Key: " + key);
+                        System.out.println("Value: " + value);
+                    }
+            );
         }
 
         /*
@@ -225,17 +226,11 @@ public class ComplexExamples {
 
     public static int[] getPair(int[] array, int sumOfPair) {
         if (array != null) {
-            // Получаем отсортированный массив
-            int[] sortedArray = Arrays.stream(array)
-                    .sorted()
-                    .toArray();
-            // Устанавливаем указатели вначале и в конце массива
+            int[] sortedArray = array.clone();
+            Arrays.sort(sortedArray);
             int startIndex = 0;
             int endIndex = sortedArray.length - 1;
-            // Проходим по элементам с двух строн, пока указатели не будут указывать на одно и то же число
             while (sortedArray[startIndex] != sortedArray[endIndex]) {
-                // Если сумма равна искомой, возвращаем числа
-                // Если меньше, увеличиваем начальный указатель, иначе уменьшаем конечный указатель
                 if (sortedArray[startIndex] + sortedArray[endIndex] == sumOfPair) {
                     return new int[]{sortedArray[startIndex], sortedArray[endIndex]};
                 } else if (sortedArray[startIndex] + sortedArray[endIndex] < sumOfPair) {
@@ -250,25 +245,20 @@ public class ComplexExamples {
 
     public static boolean fuzzySearch(String s1, String s2) {
         if (s1 != null && s2 != null && s1.length() <= s2.length()) {
-            // Преобразуем исходные строки в массивы символов
             char[] chars1 = s1.toCharArray();
             char[] chars2 = s2.toCharArray();
-            // Указываем начальные индексы массивов
             int index1 = 0;
             int index2 = 0;
             while (index2 < chars2.length) {
-                // если символ из первого массива имеется во втором, переходим к следующему символу
                 if (chars1[index1] == chars2[index2]) {
                     index1++;
                 }
-                // если в первом массиве символы закончились, значит он нечетко содержится во втором массиве
                 if (index1 == chars1.length) {
                     return true;
                 }
                 index2++;
             }
         }
-        // Если мы прошли по всему второму массиву, а первый не закончился, значит он не содержится во втором
         return false;
     }
 }
